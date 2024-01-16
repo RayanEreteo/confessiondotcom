@@ -1,14 +1,20 @@
-import { Box, Text } from '@chakra-ui/react'
+import { Box, Flex, Heading, Text } from '@chakra-ui/react'
 import Image from 'next/image'
 
 export default function Home() {
   return (
     <main>
-      <Box className='main-container' color={"white"}>
+      <Flex textAlign={"center"} width={"100vw"} h={"100vh"} className='main-container' color={"white"} justifyContent={"center"} alignItems={"center"}>
         <section className='main-content'>
-
+          <Flex className='main-content-container'>
+            <Box className='main-title'>
+              <Heading id='main-title' fontSize={"6rem"}>La Confession</Heading>
+              <br />
+              <Text fontWeight={"bolder"}>Confessez-vous et ouvrez-vous anonymement</Text>
+            </Box>
+          </Flex>
         </section>
-      </Box>
+      </Flex>
     </main>
   )
 }

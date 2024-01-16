@@ -6,7 +6,7 @@ import ChakraProviderHandler from './ChakraProviderHandler'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Confession.com',
+  title: 'La Confession',
   description: "Confessez-vous anonymement et sans jugement, et envoyer de l'amour.",
 }
 
