@@ -1,5 +1,6 @@
 import { Box, Flex, Heading, Text } from '@chakra-ui/react'
 import ConfessionViewer from './components/ConfessionViewer'
+import ConfessionWriter from './components/ConfessionWriter'
 
 export default function Home() {
   return (
@@ -13,6 +14,7 @@ export default function Home() {
               <Text fontWeight={"bolder"}>Confessez-vous et ouvrez-vous anonymement</Text>
             </Box>
             <ConfessionViewer></ConfessionViewer>
+            <ConfessionWriter></ConfessionWriter>
           </Flex>
         </section>
       </Flex>

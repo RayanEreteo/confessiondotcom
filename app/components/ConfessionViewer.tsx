@@ -28,7 +28,7 @@ function ConfessionViewer() {
           <Tooltip label={"Laisser un commentaire qui sera envoyé anonymement a la personne concerné"}>
             <Button colorScheme="blue">Envoyer un commentaire</Button>
           </Tooltip>
-          <Tooltip label={"test"}>
+          <Tooltip label={"Ignorer et passer a la confession suivante"}>
             <Button>Passez à la confession suivante</Button>
           </Tooltip>
         </Flex>
