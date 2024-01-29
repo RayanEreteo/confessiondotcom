@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Flex,
+  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -19,25 +20,37 @@ import {
 function ConfessionViewer() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  function sendCommment(event: any): void {
+    console.log("comment sent");
+  }
+
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>Envoyer un commentaire</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>
-              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolore
-              facere quibusdam obcaecati mollitia!
-            </Text>
+            <form>
+              <Text>
+                Envoyer anonymement un commentaire à l'email de l'auteur de la
+                confession.
+              </Text>
+              <br />
+              <Input placeholder="votre commentaire" maxLength={40} required></Input>
+              <br />
+              <br />
+              <Button type="submit" colorScheme="blue" mr={3}>
+                Envoyer
+              </Button>
+            </form>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={onClose}>
-              Close
+            <Button variant="ghost" onClick={onClose}>
+              Annuler
             </Button>
-            <Button variant="ghost">Secondary Action</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -74,7 +87,9 @@ function ConfessionViewer() {
                 "Laisser un commentaire qui sera envoyé anonymement a la personne concerné"
               }
             >
-              <Button colorScheme="blue" onClick={onOpen}>Envoyer un commentaire</Button>
+              <Button colorScheme="blue" onClick={onOpen}>
+                Envoyer un commentaire
+              </Button>
             </Tooltip>
             <Tooltip label={"Ignorer et passer a la confession suivante"}>
               <Button>Passez à la confession suivante</Button>
