@@ -5,6 +5,7 @@ import {
   Button,
   Flex,
   Heading,
+  Input,
   Text,
   Textarea,
   Tooltip,
@@ -13,12 +14,11 @@ import {
 import { useState } from "react";
 
 function ConfessionWriter() {
-
-    const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false);
 
   function sendConfession(e: any) {
     e.preventDefault();
-    setLoading(true)
+    setLoading(true);
 
     const data = {
       confession: e.target.confession.value,
@@ -47,8 +47,23 @@ function ConfessionWriter() {
             resize={"none"}
             maxLength={300}
             width={"400px"}
-            height={"200px"}
+            height={"10px"}
+            required
           ></Textarea>
+          <Input
+            type="email"
+            placeholder="Votre Email..."
+            mb={"3rem"}
+            border={"solid 3px black"}
+            borderRadius={"10px"}
+            color={"black"}
+            background={"white"}
+            resize={"none"}
+            maxLength={300}
+            width={"400px"}
+            textAlign={"center"}
+            required
+          ></Input>
           <Button colorScheme="blue" type="submit" isLoading={loading}>
             Envoyer la confession
           </Button>
