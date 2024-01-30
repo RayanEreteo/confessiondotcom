@@ -15,6 +15,7 @@ import { useState } from "react";
 
 function ConfessionWriter() {
   const [loading, setLoading] = useState<boolean>(false);
+  const [serverResponse, setserverResponse] = useState<any>({});
 
   function sendConfession(e: any) {
     e.preventDefault();
@@ -22,9 +23,24 @@ function ConfessionWriter() {
 
     const data = {
       confession: e.target.confession.value,
+      email: e.target.email.value,
     };
 
     const dataToSend = JSON.stringify(data);
+
+    fetch("http://localhost:8080/insertConfession", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: dataToSend,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setserverResponse(data);
+        console.log(data.message);
+        setLoading(false);
+      });
   }
 
   return (
@@ -52,8 +68,9 @@ function ConfessionWriter() {
           ></Textarea>
           <Input
             type="email"
+            name="email"
             placeholder="Votre Email..."
-            mb={"3rem"}
+            mb={"1rem"}
             border={"solid 3px black"}
             borderRadius={"10px"}
             color={"black"}
@@ -64,6 +81,15 @@ function ConfessionWriter() {
             textAlign={"center"}
             required
           ></Input>
+          <Text
+            style={
+              serverResponse && serverResponse.success == false
+                ? { color: "black" }
+                : { color: "green" }
+            }
+          >
+            {serverResponse && serverResponse.message}
+          </Text>
           <Button colorScheme="blue" type="submit" isLoading={loading}>
             Envoyer la confession
           </Button>
