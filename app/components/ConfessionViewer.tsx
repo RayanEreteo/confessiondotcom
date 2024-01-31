@@ -70,7 +70,7 @@ function ConfessionViewer() {
             width={"400px"}
             height={"200px"}
           >
-            dfsdf
+            Chargement de la confession....
           </Text>
           <Flex
             ml={"6rem"}

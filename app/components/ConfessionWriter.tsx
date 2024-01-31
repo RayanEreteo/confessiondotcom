@@ -66,6 +66,7 @@ function ConfessionWriter() {
             background={"white"}
             resize={"none"}
             maxLength={300}
+            minLength={10}
             width={"400px"}
             height={"10px"}
             required
@@ -86,6 +87,8 @@ function ConfessionWriter() {
             required
           ></Input>
           <Text
+            mb={"1rem"}
+            id="server-response"
             style={
               serverResponse && serverResponse.success == false
                 ? { color: "red" }
