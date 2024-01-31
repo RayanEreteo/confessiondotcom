@@ -41,7 +41,7 @@ function ConfessionWriter() {
         setserverResponse(data);
         console.log(data.message);
         setLoading(false);
-      }).catch(error => {
+      }).catch(() => {
         setLoading(false)
         setserverResponse({success: false, message: "Le serveur ne répond pas, merci de réessayer ultérieurement."})
       })
