@@ -19,6 +19,7 @@ function ConfessionWriter() {
 
   function sendConfession(e: any) {
     e.preventDefault();
+    setserverResponse({})
     setLoading(true);
 
     const data = {
@@ -40,7 +41,10 @@ function ConfessionWriter() {
         setserverResponse(data);
         console.log(data.message);
         setLoading(false);
-      });
+      }).catch(error => {
+        setLoading(false)
+        setserverResponse({success: false, message: "Le serveur ne répond pas, merci de réessayer ultérieurement."})
+      })
   }
 
   return (
@@ -84,7 +88,7 @@ function ConfessionWriter() {
           <Text
             style={
               serverResponse && serverResponse.success == false
-                ? { color: "black" }
+                ? { color: "red" }
                 : { color: "green" }
             }
           >
