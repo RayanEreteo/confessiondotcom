@@ -16,13 +16,32 @@ import {
   Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
 
 function ConfessionViewer() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const [loading, setLoading] = useState<boolean>(false);
+  const [currentConfession, setCurrentConfession] = useState<any>({});
+
   function sendCommment(event: any): void {
     console.log("comment sent");
   }
+ 
+  useEffect(() => {
+    setLoading(true)
+
+    fetch("http://localhost:8080/getConfession", {
+      method: "POST",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setCurrentConfession(data)
+      }).catch(() => {
+        setLoading(false)
+        setCurrentConfession({confession: "Impossible de récuperer une confession. Merci de réessayer."})
+      })
+  }, []);
 
   return (
     <>
@@ -38,7 +57,11 @@ function ConfessionViewer() {
                 confession.
               </Text>
               <br />
-              <Input placeholder="votre commentaire" maxLength={40} required></Input>
+              <Input
+                placeholder="votre commentaire"
+                maxLength={40}
+                required
+              ></Input>
               <br />
               <br />
               <Button type="submit" colorScheme="blue" mr={3}>
@@ -70,7 +93,7 @@ function ConfessionViewer() {
             width={"400px"}
             height={"200px"}
           >
-            Chargement de la confession....
+            {currentConfession.confession ? currentConfession.confession : "Chargement de la confession...."}
           </Text>
           <Flex
             ml={"6rem"}
