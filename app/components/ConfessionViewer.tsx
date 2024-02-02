@@ -21,26 +21,37 @@ import { useEffect, useState } from "react";
 function ConfessionViewer() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [currentConfession, setCurrentConfession] = useState<any>({});
 
   function sendCommment(event: any): void {
     console.log("comment sent");
   }
- 
-  useEffect(() => {
-    setLoading(true)
+
+  function fetchConfession(): void {
+    setCurrentConfession({});
+    setLoading(true);
 
     fetch("http://localhost:8080/getConfession", {
       method: "POST",
     })
       .then((res) => res.json())
       .then((data) => {
-        setCurrentConfession(data)
-      }).catch(() => {
-        setLoading(false)
-        setCurrentConfession({confession: "Impossible de récuperer une confession. Merci de réessayer."})
+        setCurrentConfession(data.confession);
       })
+      .catch(() => {
+        setCurrentConfession({
+          confession:
+            "Impossible de récuperer une confession. Merci de réessayer.",
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
+  useEffect(() => {
+    fetchConfession();
   }, []);
 
   return (
@@ -93,7 +104,9 @@ function ConfessionViewer() {
             width={"400px"}
             height={"200px"}
           >
-            {currentConfession.confession ? currentConfession.confession : "Chargement de la confession...."}
+            {currentConfession.confession
+              ? currentConfession.confession
+              : "Chargement de la confession...."}
           </Text>
           <Flex
             ml={"6rem"}
@@ -103,19 +116,21 @@ function ConfessionViewer() {
             justifyContent={"space-around"}
           >
             <Tooltip label={"Envoyer du soutien sans laisser de commentaire"}>
-              <Button colorScheme="red">Envoyer un coeur</Button>
+              <Button colorScheme="red" isLoading={loading}>Envoyer un coeur</Button>
             </Tooltip>
             <Tooltip
               label={
                 "Laisser un commentaire qui sera envoyé anonymement a la personne concerné"
               }
             >
-              <Button colorScheme="blue" onClick={onOpen}>
+              <Button colorScheme="blue" onClick={onOpen} isLoading={loading}>
                 Envoyer un commentaire
               </Button>
             </Tooltip>
             <Tooltip label={"Ignorer et passer a la confession suivante"}>
-              <Button>Passez à la confession suivante</Button>
+              <Button onClick={fetchConfession} isLoading={loading}>
+                Passez à la confession suivante
+              </Button>
             </Tooltip>
           </Flex>
         </Flex>
