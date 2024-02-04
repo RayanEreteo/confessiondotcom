@@ -16,21 +16,21 @@ import {
   Tooltip,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function ConfessionViewer({originalConfession}: any) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [currentConfession, setCurrentConfession] = useState<any>({});
+  const [currentConfession, setCurrentConfession] = useState<any>(originalConfession);
 
   function sendCommment(event: any): void {
     console.log("comment sent");
   }
 
   function fetchConfession(): void {
-    setCurrentConfession({});
+    setCurrentConfession({success: true});
     setLoading(true);
 
     fetch("http://localhost:8080/getConfession", {
@@ -38,12 +38,13 @@ function ConfessionViewer({originalConfession}: any) {
     })
       .then((res) => res.json())
       .then((data) => {
-        setCurrentConfession(data.confession);
+        setCurrentConfession(data);
       })
       .catch(() => {
         setCurrentConfession({
+          success: false,
           confession:
-            "Impossible de récuperer une confession. Merci de réessayer.",
+            {confession: "Impossible de récupérer une confession. Merci de réessayer."},
         });
       })
       .finally(() => {
@@ -96,15 +97,16 @@ function ConfessionViewer({originalConfession}: any) {
           <Text
             border={"solid 3px black"}
             borderRadius={"10px"}
+            borderColor={currentConfession.success ? "black" : "red"}
             background={"white"}
             color={"black"}
             width={"400px"}
             height={"200px"}
             padding={"6px"}
           >
-            {currentConfession.confession
-              ? currentConfession.confession
-              : originalConfession.confession}
+            {currentConfession.confession?.confession
+              ? currentConfession.confession?.confession
+              : "Chargement de la confession"}
           </Text>
           <Flex
             ml={"6rem"}
