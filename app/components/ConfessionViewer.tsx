@@ -18,10 +18,11 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
-function ConfessionViewer() {
+function ConfessionViewer({originalConfession}: any) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [currentConfession, setCurrentConfession] = useState<any>({});
 
   function sendCommment(event: any): void {
@@ -49,10 +50,6 @@ function ConfessionViewer() {
         setLoading(false);
       });
   }
-
-  useEffect(() => {
-    fetchConfession();
-  }, []);
 
   return (
     <>
@@ -103,10 +100,11 @@ function ConfessionViewer() {
             color={"black"}
             width={"400px"}
             height={"200px"}
+            padding={"6px"}
           >
             {currentConfession.confession
               ? currentConfession.confession
-              : "Chargement de la confession...."}
+              : originalConfession.confession}
           </Text>
           <Flex
             ml={"6rem"}
