@@ -18,19 +18,33 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 
-function ConfessionViewer({originalConfession}: any) {
+function ConfessionViewer({ originalConfession }: any) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [currentConfession, setCurrentConfession] = useState<any>(originalConfession);
+  const [currentConfession, setCurrentConfession] =
+    useState<any>(originalConfession);
 
-  function sendCommment(event: any): void {
-    console.log("comment sent");
+  async function sendCommment() {
+    setLoading(true);
+
+    const targetEmail = { targetEmail: currentConfession.confession.authorEmail };
+    const dataToSend = JSON.stringify(targetEmail);
+
+    const response = await fetch("http://localhost:8080/sendLove", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: dataToSend,
+    });
+
+    const data = await response.json()
   }
 
   function fetchConfession(): void {
-    setCurrentConfession({success: true});
+    setCurrentConfession({ success: true });
     setLoading(true);
 
     fetch("http://localhost:8080/getConfession", {
@@ -43,8 +57,10 @@ function ConfessionViewer({originalConfession}: any) {
       .catch(() => {
         setCurrentConfession({
           success: false,
-          confession:
-            {confession: "Impossible de récupérer une confession. Merci de réessayer."},
+          confession: {
+            confession:
+              "Impossible de récupérer une confession. Merci de réessayer.",
+          },
         });
       })
       .finally(() => {
@@ -106,7 +122,7 @@ function ConfessionViewer({originalConfession}: any) {
           >
             {currentConfession.confession?.confession
               ? currentConfession.confession?.confession
-              : "Chargement de la confession"}
+              : "Chargement de la confession...."}
           </Text>
           <Flex
             ml={"6rem"}
@@ -116,7 +132,13 @@ function ConfessionViewer({originalConfession}: any) {
             justifyContent={"space-around"}
           >
             <Tooltip label={"Envoyer du soutien sans laisser de commentaire"}>
-              <Button colorScheme="red" isLoading={loading}>Envoyer un coeur</Button>
+              <Button
+                onClick={sendCommment}
+                colorScheme="red"
+                isLoading={loading}
+              >
+                Envoyer un coeur
+              </Button>
             </Tooltip>
             <Tooltip
               label={
