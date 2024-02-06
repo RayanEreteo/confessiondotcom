@@ -43,29 +43,28 @@ function ConfessionViewer({ originalConfession }: any) {
     const data = await response.json()
   }
 
-  function fetchConfession(): void {
+  async function fetchConfession() {
     setCurrentConfession({ success: true });
     setLoading(true);
 
-    fetch("http://localhost:8080/getConfession", {
-      method: "POST",
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setCurrentConfession(data);
+    try {
+      const response = await fetch("http://localhost:8080/getConfession", {
+        method: "POST",
       })
-      .catch(() => {
-        setCurrentConfession({
-          success: false,
-          confession: {
-            confession:
-              "Impossible de récupérer une confession. Merci de réessayer.",
-          },
-        });
-      })
-      .finally(() => {
-        setLoading(false);
+      const fetchedConfession = await response.json()
+
+      setCurrentConfession(fetchedConfession)
+    } catch (error) {
+      setCurrentConfession({
+        success: false,
+        confession: {
+          confession:
+            "Impossible de récupérer une confession. Merci de réessayer.",
+        },
       });
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
