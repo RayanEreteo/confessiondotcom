@@ -20,7 +20,7 @@ function ConfessionWriter() {
   const confinputRef = useRef<HTMLTextAreaElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
 
-  function sendConfession(e: any) {
+  async function sendConfession(e: any) {
     e.preventDefault();
     setserverResponse({})
     setLoading(true);
@@ -32,25 +32,29 @@ function ConfessionWriter() {
 
     const dataToSend = JSON.stringify(data);
 
-    fetch("http://localhost:8080/insertConfession", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: dataToSend,
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setserverResponse(data);
-        console.log(data.message);
-        setLoading(false);
-      }).catch(() => {
-        setLoading(false)
-        setserverResponse({success: false, message: "Le serveur ne répond pas, merci de réessayer ultérieurement."})
-      }).finally(() => {
-        confinputRef.current!.value = ""
-        emailRef.current!.value = ""
-      })
+    try {
+      const response = await fetch("http://localhost:8080/insertConfession", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: dataToSend,
+      });
+    
+      const data = await response.json();
+      setserverResponse(data);
+      console.log(data.message);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      setserverResponse({
+        success: false,
+        message: "Le serveur ne répond pas, merci de réessayer ultérieurement.",
+      });
+    } finally {
+      confinputRef.current!.value = "";
+      emailRef.current!.value = "";
+    }    
   }
 
   return (
