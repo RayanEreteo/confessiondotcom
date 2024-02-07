@@ -11,11 +11,14 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 function ConfessionWriter() {
   const [loading, setLoading] = useState<boolean>(false);
   const [serverResponse, setserverResponse] = useState<any>({});
+
+  const confinputRef = useRef<HTMLTextAreaElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
 
   function sendConfession(e: any) {
     e.preventDefault();
@@ -44,6 +47,9 @@ function ConfessionWriter() {
       }).catch(() => {
         setLoading(false)
         setserverResponse({success: false, message: "Le serveur ne répond pas, merci de réessayer ultérieurement."})
+      }).finally(() => {
+        confinputRef.current!.value = ""
+        emailRef.current!.value = ""
       })
   }
 
@@ -57,6 +63,7 @@ function ConfessionWriter() {
           textAlign={"left"}
         >
           <Textarea
+            ref={confinputRef}
             name="confession"
             placeholder="Ecriver votre confession...."
             mb={"3rem"}
@@ -72,6 +79,7 @@ function ConfessionWriter() {
             required
           ></Textarea>
           <Input
+            ref={emailRef}
             type="email"
             name="email"
             placeholder="Votre Email..."
