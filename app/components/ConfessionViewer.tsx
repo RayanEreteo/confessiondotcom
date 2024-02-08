@@ -26,7 +26,28 @@ function ConfessionViewer({ originalConfession }: any) {
   const [currentConfession, setCurrentConfession] =
     useState<any>(originalConfession);
 
-  async function sendCommment() {
+  async function sendCommment(e: any) {
+    e.preventDefault();
+    setLoading(true);
+
+    const dataPlain = { targetEmail: currentConfession.confession.authorEmail, comment: e.target.comment.value };
+
+    const dataToSend = JSON.stringify(dataPlain);
+
+    const response = await fetch("http://localhost:8080/sendComment", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: dataToSend,
+    });
+
+    fetchConfession()
+    setLoading(false)
+    onClose()
+  }
+
+  async function sendLove(){
     setLoading(true);
 
     const targetEmail = { targetEmail: currentConfession.confession.authorEmail };
@@ -40,7 +61,9 @@ function ConfessionViewer({ originalConfession }: any) {
       body: dataToSend,
     });
 
-    const data = await response.json()
+    setLoading(false);
+    fetchConfession();
+
   }
 
   async function fetchConfession() {
@@ -75,13 +98,14 @@ function ConfessionViewer({ originalConfession }: any) {
           <ModalHeader>Envoyer un commentaire</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <form>
+            <form onSubmit={sendCommment}>
               <Text>
                 Envoyer anonymement un commentaire à l'email de l'auteur de la
                 confession.
               </Text>
               <br />
               <Input
+                name="comment"
                 placeholder="votre commentaire"
                 maxLength={40}
                 required
@@ -132,7 +156,7 @@ function ConfessionViewer({ originalConfession }: any) {
           >
             <Tooltip label={"Envoyer du soutien sans laisser de commentaire"}>
               <Button
-                onClick={sendCommment}
+                onClick={sendLove}
                 colorScheme="red"
                 isLoading={loading}
               >
