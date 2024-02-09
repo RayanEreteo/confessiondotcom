@@ -34,7 +34,7 @@ function ConfessionViewer({ originalConfession }: any) {
 
     const dataToSend = JSON.stringify(dataPlain);
 
-    const response = await fetch("http://localhost:8080/sendComment", {
+    await fetch("http://localhost:8080/sendComment", {
       headers: {
         "Content-Type": "application/json",
       },
@@ -50,10 +50,10 @@ function ConfessionViewer({ originalConfession }: any) {
   async function sendLove(){
     setLoading(true);
 
-    const targetEmail = { targetEmail: currentConfession.confession.authorEmail };
-    const dataToSend = JSON.stringify(targetEmail);
+    const data = { targetEmail: currentConfession.confession.authorEmail };
+    const dataToSend = JSON.stringify(data);
 
-    const response = await fetch("http://localhost:8080/sendLove", {
+    await fetch("http://localhost:8080/sendLove", {
       headers: {
         "Content-Type": "application/json",
       },
