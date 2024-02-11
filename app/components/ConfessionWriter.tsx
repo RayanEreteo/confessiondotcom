@@ -43,7 +43,6 @@ function ConfessionWriter() {
     
       const data = await response.json();
       setserverResponse(data);
-      console.log(data.message);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -54,7 +53,7 @@ function ConfessionWriter() {
     } finally {
       confinputRef.current!.value = "";
       emailRef.current!.value = "";
-    }    
+    }
   }
 
   return (
