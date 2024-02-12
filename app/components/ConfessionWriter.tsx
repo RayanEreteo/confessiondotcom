@@ -33,7 +33,7 @@ function ConfessionWriter() {
     const dataToSend = JSON.stringify(data);
 
     try {
-      const response = await fetch("http://localhost:8080/insertConfession", {
+      const response = await fetch(`${process.env.API_ENDPOINT}/insertConfession`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

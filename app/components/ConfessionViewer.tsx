@@ -34,7 +34,7 @@ function ConfessionViewer({ originalConfession }: any) {
 
     const dataToSend = JSON.stringify(dataPlain);
 
-    await fetch("http://localhost:8080/sendComment", {
+    await fetch(`${process.env.API_ENDPOINT}/sendComment`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -42,9 +42,9 @@ function ConfessionViewer({ originalConfession }: any) {
       body: dataToSend,
     });
 
-    fetchConfession()
-    setLoading(false)
-    onClose()
+    fetchConfession();
+    setLoading(false);
+    onClose();
   }
 
   async function sendLove(){
@@ -53,7 +53,7 @@ function ConfessionViewer({ originalConfession }: any) {
     const data = { targetEmail: currentConfession.confession.authorEmail };
     const dataToSend = JSON.stringify(data);
 
-    await fetch("http://localhost:8080/sendLove", {
+    await fetch(`${process.env.API_ENDPOINT}/sendLove`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -112,7 +112,7 @@ function ConfessionViewer({ originalConfession }: any) {
               ></Input>
               <br />
               <br />
-              <Button type="submit" colorScheme="blue" mr={3}>
+              <Button type="submit" colorScheme="blue" mr={3} isLoading={loading}>
                 Envoyer
               </Button>
             </form>
